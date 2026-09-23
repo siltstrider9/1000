@@ -9,23 +9,30 @@ class MainMenu extends Phaser.Scene {
             this.registry.set('useBarrel', false);
         }
 
-        this.add.text(400, 200, 'ТЫСЯЧА', { fontSize: '64px', fill: '#ffea00', fontStyle: 'bold' }).setOrigin(0.5);
+        // Заголовок стал огромным
+        this.add.text(960, 300, 'ТЫСЯЧА', { fontSize: '120px', fill: '#ffea00', fontStyle: 'bold' }).setOrigin(0.5);
 
-        this.add.text(400, 350, '[ НАЧАТЬ ИГРУ ]', { fontSize: '32px', fill: '#00ff00' })
+        // Кнопка [ НАЧАТЬ ИГРУ ]
+        let startBtn = this.add.text(960, 600, '[ НАЧАТЬ ИГРУ ]', { fontSize: '64px', fill: '#00ff00' })
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('Lobby'));
+            
+        startBtn.on('pointerover', () => startBtn.setScale(1.1));
+        startBtn.on('pointerout', () => startBtn.setScale(1));
 
         // --- ОКНО НАСТРОЕК (Скрытое по умолчанию) ---
         this.settingsContainer = this.add.container(0, 0).setDepth(100).setVisible(false);
         
-        let overlay = this.add.rectangle(400, 300, 800, 600, 0x000000, 0.9).setInteractive(); // Блокирует клики
+        // Фон на весь экран 1920x1080
+        let overlay = this.add.rectangle(960, 540, 1920, 1080, 0x000000, 0.9).setInteractive(); 
         this.settingsContainer.add(overlay);
-        this.settingsContainer.add(this.add.text(400, 150, 'НАСТРОЙКИ', { fontSize: '40px', fill: '#fff' }).setOrigin(0.5));
+        
+        this.settingsContainer.add(this.add.text(960, 250, 'НАСТРОЙКИ', { fontSize: '80px', fill: '#fff' }).setOrigin(0.5));
 
         // Кнопка переключения бочки
         let getBarrelText = () => this.registry.get('useBarrel') ? 'Правило "Бочки": ВКЛ' : 'Правило "Бочки": ВЫКЛ';
-        let barrelBtn = this.add.text(400, 260, getBarrelText(), { fontSize: '28px', fill: '#ffea00' })
+        let barrelBtn = this.add.text(960, 450, getBarrelText(), { fontSize: '56px', fill: '#ffea00' })
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
@@ -36,16 +43,19 @@ class MainMenu extends Phaser.Scene {
         this.settingsContainer.add(barrelBtn);
 
         // Кнопка закрытия настроек
-        let closeBtn = this.add.text(400, 450, '[ ЗАКРЫТЬ ]', { fontSize: '24px', fill: '#aaa' })
+        let closeBtn = this.add.text(960, 800, '[ ЗАКРЫТЬ ]', { fontSize: '48px', fill: '#aaa' })
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.settingsContainer.setVisible(false));
         this.settingsContainer.add(closeBtn);
 
         // --- КНОПКА ВЫЗОВА НАСТРОЕК ---
-        this.add.text(400, 420, '[ НАСТРОЙКИ ]', { fontSize: '32px', fill: '#ffffff' })
+        let settingsBtn = this.add.text(960, 750, '[ НАСТРОЙКИ ]', { fontSize: '64px', fill: '#ffffff' })
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.settingsContainer.setVisible(true));
+            
+        settingsBtn.on('pointerover', () => settingsBtn.setScale(1.1));
+        settingsBtn.on('pointerout', () => settingsBtn.setScale(1));
     }
 }
