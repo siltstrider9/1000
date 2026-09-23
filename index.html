@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1000 Dice Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+
+    <!-- Движок Phaser -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+
+    <!-- Логика игры -->
+    <script src="src/logic/RulesEngine.js"></script>
+    <script src="src/logic/GameState.js"></script>
+
+    <!-- Игровые объекты и сцены -->
+    <script src="src/objects/Dice.js"></script>    
+    <script src="src/scenes/MainMenu.js"></script>
+    <script src="src/scenes/Lobby.js"></script>
+    <script src="src/scenes/Game.js"></script>
+
+    <script src="src/main.js"></script>
+</body>
+</html>
