@@ -1,8 +1,8 @@
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
 
     scale: {
         // FIT - растянет игру на весь экран, но сохранит пропорции (не обрежет края)
@@ -10,7 +10,7 @@ const config = {
         // Центрируем канвас по горизонтали и вертикали
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    
+
     parent: 'game-container',
     backgroundColor: '#2d6a4f',    
     scene: [MainMenu, Lobby, GameScene] 
