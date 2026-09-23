@@ -13,10 +13,17 @@ class MainMenu extends Phaser.Scene {
         this.add.text(960, 300, 'ТЫСЯЧА', { fontSize: '120px', fill: '#ffea00', fontStyle: 'bold' }).setOrigin(0.5);
 
         // Кнопка [ НАЧАТЬ ИГРУ ]
+       // Кнопка [ НАЧАТЬ ИГРУ ]
         let startBtn = this.add.text(960, 600, '[ НАЧАТЬ ИГРУ ]', { fontSize: '64px', fill: '#00ff00' })
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('Lobby'));
+            .on('pointerdown', () => {
+                // Просим браузер скрыть адресную строку и уйти в фуллскрин
+                if (!this.scale.isFullscreen) {
+                    this.scale.startFullscreen();
+                }
+                this.scene.start('Lobby');
+            });
             
         startBtn.on('pointerover', () => startBtn.setScale(1.1));
         startBtn.on('pointerout', () => startBtn.setScale(1));
