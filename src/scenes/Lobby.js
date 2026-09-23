@@ -1,12 +1,13 @@
 class UIHelper {
     static showPrompt(defaultValue, callback) {
         let overlay = document.createElement('div');
-        overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;';
+        overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center;';
         
         let input = document.createElement('input');
         input.type = 'text'; 
         input.value = defaultValue;
-        input.style.cssText = 'width: 250px; padding: 15px; font-size: 24px; border-radius: 8px; border: 2px solid #0f0; text-align: center; background: #222; color: #ffea00; outline: none;';
+        // Увеличиваем размер поля и шрифта под пальцы
+        input.style.cssText = 'width: 60%; max-width: 600px; padding: 25px; font-size: 48px; border-radius: 12px; border: 4px solid #0f0; text-align: center; background: #222; color: #ffea00; outline: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);';
         
         input.onkeydown = (e) => { 
             if (e.key === 'Enter') {
@@ -27,7 +28,10 @@ class UIHelper {
         overlay.appendChild(input);
         document.body.appendChild(overlay);
         
-        setTimeout(() => input.focus(), 50);
+        setTimeout(() => {
+            input.focus();
+            input.select(); // Сразу выделяем старое имя, чтобы легко стирать
+        }, 50);
     }
 }
 
@@ -40,13 +44,14 @@ class Lobby extends Phaser.Scene {
         this.players = ['Игрок 1'];
         this.maxPlayers = 6;
         
-        // Массив для хранения отдельных строк с именами
         this.playerTextObjects = []; 
 
-        this.add.text(400, 80, 'ТЫСЯЧА', { fontSize: '64px', fill: '#fff', fontStyle: 'bold' }).setOrigin(0.5);
-        this.add.text(400, 140, '(Нажмите на имя, чтобы изменить)', { fontSize: '20px', fill: '#aaa' }).setOrigin(0.5);
+        // Центр теперь по X = 960
+        this.add.text(960, 150, 'ТЫСЯЧА', { fontSize: '100px', fill: '#fff', fontStyle: 'bold' }).setOrigin(0.5);
+        this.add.text(960, 240, '(Нажмите на имя, чтобы изменить)', { fontSize: '32px', fill: '#aaa' }).setOrigin(0.5);
 
-        this.add.text(250, 460, '[ + ИГРОК ]', { fontSize: '32px', fill: '#0f0' })
+        // Кнопка [+ ИГРОК] слева
+        this.add.text(600, 850, '[ + ИГРОК ]', { fontSize: '48px', fill: '#0f0' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
             .on('pointerdown', () => {
@@ -56,7 +61,8 @@ class Lobby extends Phaser.Scene {
                 }
             });
 
-        this.add.text(550, 460, '[ - ИГРОК ]', { fontSize: '32px', fill: '#f00' })
+        // Кнопка [- ИГРОК] справа
+        this.add.text(1320, 850, '[ - ИГРОК ]', { fontSize: '48px', fill: '#f00' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
             .on('pointerdown', () => {
@@ -66,27 +72,30 @@ class Lobby extends Phaser.Scene {
                 }
             });
 
-        this.add.text(400, 540, '>> НАЧАТЬ ИГРУ <<', { fontSize: '48px', fill: '#fff' })
+        // Огромная кнопка "Начать" снизу по центру
+        let startBtn = this.add.text(960, 1000, '>> НАЧАТЬ ИГРУ <<', { fontSize: '64px', fill: '#ffea00', fontStyle: 'bold' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
             .on('pointerdown', () => {
                 this.scene.start('GameScene', { playerNames: this.players });
             });
 
+        startBtn.on('pointerover', () => startBtn.setScale(1.1));
+        startBtn.on('pointerout', () => startBtn.setScale(1));
+
         this.renderPlayerList();
     }
 
     renderPlayerList() {
-        // Удаляем старые имена перед перерисовкой
         this.playerTextObjects.forEach(textObj => textObj.destroy());
         this.playerTextObjects = [];
 
-        let startY = 200;
-        let spacing = 40;
+        // Имена начинаются ниже заголовка
+        let startY = 380;
+        let spacing = 70; // Шаг между именами
 
-        // Создаем каждое имя как отдельный кликабельный элемент
         this.players.forEach((name, index) => {
-            let pText = this.add.text(400, startY + (index * spacing), name, { fontSize: '32px', fill: '#ffea00' })
+            let pText = this.add.text(960, startY + (index * spacing), name, { fontSize: '48px', fill: '#ffea00' })
                 .setOrigin(0.5)
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', () => {
@@ -97,6 +106,10 @@ class Lobby extends Phaser.Scene {
                         }
                     });
                 });
+
+            // Эффект наведения, чтобы понятно было, что можно кликать
+            pText.on('pointerover', () => pText.setColor('#ffffff'));
+            pText.on('pointerout', () => pText.setColor('#ffea00'));
 
             this.playerTextObjects.push(pText);
         });
